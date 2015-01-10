@@ -5,6 +5,7 @@
     android:orientation="vertical"
     tools:context=".QuestionsListActivity">
 
+
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
@@ -12,11 +13,18 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:elevation="5dp"
-        android:background="?attr/colorPrimaryDark"/>
+        android:titleTextAppearance="@color/white"
+        android:background="@color/toolbarGreen"/>
+
+    <!-- animations occur behind background unless drawSelectorOnTop = true -->
 
     <ExpandableListView
         android:id="@+id/expandablelistview_questions"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent"
+        android:choiceMode="multipleChoice"
+        android:drawSelectorOnTop="true"
+        android:childDivider="@color/toolbarBrown"
+        />
 
 </LinearLayout>

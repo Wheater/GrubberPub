@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.wheatrenterprises.eric.grubber.SettingsFragment">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/radio_button_group">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/current_location"
+            android:id="@+id/radio_button_current_location"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:gravity="center"/>
+
+
+
+    <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chosen_location"
+            android:id="@+id/radio_button_chosen_location"
+            android:gravity="center"
+
+            android:padding="20dp"
+            android:layout_gravity="center"/>
+
+
+    </RadioGroup>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_text_chosen_location"
+            android:hint="Enter zip code or city, state"
+            android:maxLines="1"
+            android:imeOptions="actionGo"
+            android:gravity="center"
+            android:padding="20dp"
+            android:layout_marginBottom="25dp"
+            android:layout_gravity="center"/>
+
+
+</LinearLayout>

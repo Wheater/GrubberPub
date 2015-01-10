@@ -1,24 +1,17 @@
 package com.wheatrenterprises.eric.grubber;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
-
-import java.util.List;
-import java.util.Map;
 
 
 public class QuestionsListActivity extends ActionBarActivity {
 
     private QuestionsAdapter questionsAdapter;
-    /*
-     * Question Collection contains all questions
-     * and associated answers built from a set of
-     * strings of question and their list answers
-     */
-    Map<String, List<String>> questionCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +24,81 @@ public class QuestionsListActivity extends ActionBarActivity {
         if(toolbar != null) {
             setSupportActionBar(toolbar);
             toolbar.setTitle(getResources().getString(R.string.app_name));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         }
 
         //filling list view
-        ExpandableListView lv = (ExpandableListView) findViewById(R.id.expandablelistview_questions);
+        final ExpandableListView lv = (ExpandableListView) findViewById(R.id.expandablelistview_questions);
         questionsAdapter = new QuestionsAdapter(this, QuestionCollection.getQuestionCollection(), QuestionCollection.getQuestionList());
         lv.setAdapter(questionsAdapter);
+        final QuestionsAdapter qa = questionsAdapter;
+        //close any open views when a new view is clicked
+        lv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+
+                // Implement this method to scroll to the correct position as this doesn't
+                // happen automatically if we override onGroupExpand() as above
+                //parent.smoothScrollToPosition(groupPosition);
+
+                for(int j = 0; j < qa.getGroupCount(); j++){
+
+                    //set all groups to unchecked. later we will highlight the correct item
+                    //get group position and click position
+                    int groupIndex = parent.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(j));
+
+                    parent.setItemChecked(groupIndex, false);
+                }
+
+                for(int i = 0; i < parent.getCount(); i++){
+
+                    if(parent.isGroupExpanded(i)) {
+
+                        parent.collapseGroup(i);
+                    }
+                }
+                // Need default behaviour here otherwise group does not get expanded/collapsed
+                // on click
+                if (parent.isGroupExpanded(groupPosition)) {
+                    parent.collapseGroup(groupPosition);
+                    //this is only valid if choice_mode has been set
+                    parent.setItemChecked(groupPosition, false);
+                } else {
+                    parent.expandGroup(groupPosition);
+                    parent.setItemChecked(groupPosition, true);
+                }
+
+                //reset checked item if there is one
+
+                //returns true if click is handled
+                return true;
+            }
+        });
+
+        lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                //get group position and click position
+                int groupIndex = parent.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(groupPosition));
+                int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
+
+                //reset all children to unchecked if not click position
+                for (int i = 0; i < QuestionCollection.getQuestionCollection().get(QuestionCollection.getQuestionList().get(groupPosition)).size(); i++){
+
+                    if(groupIndex + i + 1 != index)
+                        parent.setItemChecked(groupIndex + i + 1, false);
+                }
+
+                //check new position
+                if (parent.isItemChecked(index))
+                    parent.setItemChecked(index, false);
+                else
+                    parent.setItemChecked(index, true);
+
+                return true;
+            }
+        });
     }
 
 
@@ -54,6 +116,21 @@ public class QuestionsListActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        switch (id) {
+            case R.id.menu_settings:
+                showDialog();
+                break;
+            case R.id.menu_search:
+
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog(){
+
+        DialogFragment frag = SettingsFragment.newInstance();
+        frag.show(getSupportFragmentManager(), "dialog");
     }
 }

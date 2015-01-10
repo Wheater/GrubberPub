@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="toolbarBrown">#B09661</color>
+    <color name="toolbarGreen">#ff69b84d</color>
+    <color name="charcoal">#ff676767</color>
+    <color name="gray">#ffc4c4c4</color>
+    <color name="darkBrown">#ff803b2e</color>
+    <color name="lightGray">#ffeeeeee</color>
+    <color name="evenLighterGray">#fff8f8f8</color>
+    <color name="lightYellow">#fffffded</color>
+</resources>
