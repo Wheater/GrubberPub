@@ -143,7 +143,7 @@ public class QuestionsListActivity extends ActionBarActivity {
                 showDialog();
                 break;
             case R.id.menu_search:
-
+                new YelpQueryTask(this).execute();
                 break;
         }
 

@@ -58,7 +58,7 @@ public class QueryBuilder implements Serializable {
         answerList.set(position, value);
     }
 
-    public void reset(){
+    public void clear(){
 
         setGroup("");
         setKids("");
