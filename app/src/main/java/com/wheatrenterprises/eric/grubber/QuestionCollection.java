@@ -12,6 +12,7 @@ import java.util.Map;
 public class QuestionCollection {
 
     private static Map<String, List<String>> mQuestionCollection;
+    private QueryBuilder qb = QueryBuilder.getInstance();
 
     private static ArrayList<String> mQuestionList = new ArrayList<String>(){{
         add("What price range are you interested in?");
@@ -23,7 +24,7 @@ public class QuestionCollection {
     }};
 
     //answers
-    final static String[] costAnswers = {"Cheap", "Moderate", "Expensive", "Most Expensive"};
+    final static String[] costAnswers = {"$", "$$", "$$$", "$$$$"};
     final static String[] sportsAnswers = {"Yes", "No"};
     final static String[] smokingAnswers = {"Yes", "No"};
     final static String[] groupAnswers = {"Yes", "No"};
@@ -50,6 +51,31 @@ public class QuestionCollection {
             else if(question.equals("Will your party be smoking?"))
                 mQuestionCollection.put(question, new ArrayList<String>(Arrays.asList(smokingAnswers)));
 
+        }
+    }
+
+    public void setQueryBuilderAnswer(int position, String value){
+
+        switch(position){
+
+            case 0:
+                qb.setPrice(value);
+                break;
+            case 1:
+                qb.setWhere(value);
+                break;
+            case 2:
+                qb.setGroup(value);
+                break;
+            case 3:
+                qb.setSports(value);
+                break;
+            case 4:
+                qb.setKids(value);
+                break;
+            case 5:
+                qb.setSmoking(value);
+                break;
         }
     }
 

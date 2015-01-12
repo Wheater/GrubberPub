@@ -18,11 +18,10 @@
 
     <!-- animations occur behind background unless drawSelectorOnTop = true -->
 
-    <ExpandableListView
-        android:id="@+id/expandablelistview_questions"
+    <ListView
+        android:id="@+id/listview_questions"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:choiceMode="multipleChoice"
         android:drawSelectorOnTop="true"
         android:childDivider="@color/toolbarBrown"
         />

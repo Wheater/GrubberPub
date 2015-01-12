@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/touch_selector_questions">
+
+    <TextView
+        android:id="@+id/textview_question_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price range"
+
+        android:textColor="@color/darkBrown"
+        android:textStyle="bold"
+        android:paddingLeft="30dp"
+        android:paddingTop="15dp"
+        android:paddingRight="15dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio_group_pricing"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_button_price_1"
+                android:layout_weight=".25"
+                android:text="$"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".25"
+                android:text="$$"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/radio_button_price_2"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".25"
+                android:text="$$$"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/radio_button_price_3"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".25"
+                android:text="$$$$"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/radio_button_price_4"/>
+
+        </RadioGroup>
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_selector_questions"
+    android:descendantFocusability="blocksDescendants"
+    android:clickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
+
+    <TextView
+        android:id="@+id/textview_question_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".75"
+        android:text="Smoking"
+        android:background="@drawable/touch_selector_questions"
+        android:textColor="@color/darkBrown"
+        android:textStyle="bold"
+        android:padding="30dp"/>
+
+    <Switch
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".25"
+        android:id="@+id/switch_questions_bool" />
+
+
+</LinearLayout>
