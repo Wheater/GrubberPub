@@ -127,7 +127,7 @@ public class QueryBuilder implements Serializable {
         if(mLocation != null)
             return mLocation.getLatitude() + "," + mLocation.getLongitude();
         else
-            return "-33, 95";
+            return "37.7833,-122.4167";
     }
 
     public void setKids(String kids){

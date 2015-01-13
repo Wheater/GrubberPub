@@ -2,11 +2,11 @@ package com.wheatrenterprises.eric.grubber;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +28,8 @@ import android.widget.RadioGroup;
 public class SettingsFragment extends DialogFragment {
 
     ViewGroup container;
+    EditText editText;
+    SharedPreferences sharedPreferences;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -52,7 +54,7 @@ public class SettingsFragment extends DialogFragment {
         this.container = container;
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        final SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPreferences", 0);
+        sharedPreferences = getActivity().getSharedPreferences("MySharedPreferences", 0);
         final SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
 
         RadioButton rbChosen = (RadioButton) view.findViewById(R.id.radio_button_chosen_location);
@@ -62,8 +64,21 @@ public class SettingsFragment extends DialogFragment {
         final int chosenId = rbChosen.getId();
         final int currentId = rbCurrent.getId();
 
-        EditText editText = (EditText) view.findViewById(R.id.edit_text_chosen_location);
+        editText = (EditText) view.findViewById(R.id.edit_text_chosen_location);
+        editText.setText(sharedPreferences.getString("Location", ""));
         final EditText et = editText;
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(!hasFocus) {
+                    sharedPreferencesEditor.putString("Location", et.getText().toString());
+                    sharedPreferencesEditor.commit();
+                }
+            }
+        });
+
         RadioGroup rg = (RadioGroup) view.findViewById(R.id.radio_button_group);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -95,24 +110,11 @@ public class SettingsFragment extends DialogFragment {
 
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
 
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        //saving edittext in case of restart
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
-
-        EditText editText = (EditText) view.findViewById(R.id.edit_text_chosen_location);
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPreferences", 0);
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString("Location", editText.getText().toString());
-        sharedPreferencesEditor.commit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Location", editText.getText().toString());
+        editor.commit();
     }
 }

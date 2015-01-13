@@ -80,11 +80,8 @@ public class YelpAPI {
 
         JSONArray businesses = (JSONArray) response.get("businesses");
         for(int i = 0; i < businesses.size(); i++){
-            Log.v("businesses", businesses.get(i).toString());
+
             Log.v("nextJSON", ((JSONObject) businesses.get(i)).get("location").toString());
-            Log.v("nextJSON", ((JSONObject) ((JSONObject) businesses.get(i)).get("location")).get("city").toString());
-            Log.v("nextJSON", ((JSONObject) businesses.get(i)).get("snippet_image_url").toString());
-            Log.v("nextJSON", ((JSONObject) businesses.get(i)).get("url").toString());
         }
         JSONObject firstBusiness = (JSONObject) businesses.get(0);
         String firstBusinessID = firstBusiness.get("id").toString();

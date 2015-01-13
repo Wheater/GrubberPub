@@ -1,6 +1,10 @@
 package com.wheatrenterprises.eric.grubber;
 
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -19,6 +23,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -33,9 +38,14 @@ public class QuestionsListActivity extends ActionBarActivity implements
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //initialize sharedPrefs
+        sharedPreferences = getSharedPreferences("MySharedPreferences", 0);
 
         //set up google maps api client
         buildGoogleApiClient();
@@ -155,6 +165,17 @@ public class QuestionsListActivity extends ActionBarActivity implements
                 showDialog();
                 break;
             case R.id.menu_search:
+                //connect right before search to grab current
+                //shared preferences
+                if (mLastLocation != null && sharedPreferences.getString("LocationType", "Current").equals("Current")) {
+                    qb.setLocation(mLastLocation);
+                    Log.v("current", "current");
+                } else {
+                    //make GPS coordinates from chosen location zip code
+                    Log.v("chosen", "chosen");
+                    qb.setLocation(buildCoordinatesFromZip());
+                }
+
                 new YelpQueryTask(this).execute();
                 break;
         }
@@ -165,10 +186,10 @@ public class QuestionsListActivity extends ActionBarActivity implements
     private void showDialog(){
 
         DialogFragment frag = SettingsFragment.newInstance();
+
         frag.show(getSupportFragmentManager(), "dialog");
     }
 
-    //force onConnect to get last location
     @Override
     protected void onStart() {
         super.onStart();
@@ -181,19 +202,11 @@ public class QuestionsListActivity extends ActionBarActivity implements
 
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        if (mLastLocation != null) {
-            qb.setLocation(mLastLocation);
-        } else {
-            Toast.makeText(this, "could not get location", Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
 
-        Toast.makeText(this,
-                "Could not retrieve location. Please choose a location in settings.",
-                Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -210,5 +223,33 @@ public class QuestionsListActivity extends ActionBarActivity implements
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+    }
+
+    private Location buildCoordinatesFromZip(){
+
+        String mLocation = sharedPreferences.getString("Location", "Houston");
+
+        final Geocoder geocoder = new Geocoder(this);
+
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(mLocation, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+
+                Location loc = new Location("location");
+                loc.setLatitude(address.getLatitude());
+                loc.setLongitude(address.getLongitude());
+
+                return loc;
+
+            } else {
+                // Display appropriate message when Geocoder services are not available
+                Toast.makeText(this, "Unable to geocode location", Toast.LENGTH_LONG).show();
+                return null;
+            }
+        } catch (IOException e) {
+            // handle exception
+            return null;
+        }
     }
 }
