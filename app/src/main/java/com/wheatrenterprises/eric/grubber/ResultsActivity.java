@@ -1,15 +1,20 @@
 package com.wheatrenterprises.eric.grubber;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.squareup.picasso.Picasso;
 
 
 public class ResultsActivity extends ActionBarActivity {
 
     ListView lv;
+    ResultsAdapter resultsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +28,20 @@ public class ResultsActivity extends ActionBarActivity {
             setSupportActionBar(toolbar);
             toolbar.setTitle(getResources().getString(R.string.app_name));
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         //filling list view
-        //lv = (ListView) findViewById(R.id.listview_questions);
-        //lv.setAdapter(questionsAdapter);
+        resultsAdapter = new ResultsAdapter(this, QueryResultList.getInstance().getResults());
+        lv = (ListView) findViewById(R.id.listview_results);
+        lv.setAdapter(resultsAdapter);
+
+        ImageView imgView = (ImageView) findViewById(R.id.image_view_yelp_image);
+        Picasso.with(this)
+                .load("http://s3-media4.fl.yelpcdn.com/assets/2/www/img/56884a7c4c0e/developers/reviewsFromYelpYLW.gif")
+                .resize(460,100)
+                .into(imgView);
+
     }
 
 
@@ -45,6 +59,12 @@ public class ResultsActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        switch(id) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

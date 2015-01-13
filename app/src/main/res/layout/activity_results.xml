@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context=".QuestionsListActivity">
 
@@ -23,7 +23,15 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:drawSelectorOnTop="true"
+        android:layout_weight="1"
         android:childDivider="@color/toolbarBrown"
         />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_view_yelp_image"
+        android:layout_gravity="end"
+        android:background="@color/beige"/>
 
 </LinearLayout>

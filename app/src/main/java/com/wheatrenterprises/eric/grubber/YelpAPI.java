@@ -13,6 +13,9 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Yelp API class for querying its database
  */
@@ -65,6 +68,11 @@ public class YelpAPI {
 
     public void queryAPI(YelpAPI yelpApi, String queryValue, String location) {
 
+        //initialize singleton
+        QueryResultList qrl = QueryResultList.getInstance();
+        //clear out singleton
+        qrl.clear();
+
         String searchResponseJSON =
                 yelpApi.searchForBusinessesByLocation(queryValue, location);
 
@@ -79,12 +87,72 @@ public class YelpAPI {
         }
 
         JSONArray businesses = (JSONArray) response.get("businesses");
-        for(int i = 0; i < businesses.size(); i++){
 
-            Log.v("nextJSON", ((JSONObject) businesses.get(i)).get("location").toString());
+        if(businesses != null) {
+            for (int i = 0; i < businesses.size(); i++) {
+
+                Log.v("nextJSON", ((JSONObject) businesses.get(i)).get("location").toString());
+
+                QueryResult r = new QueryResult(((JSONObject) (businesses.get(i))).get("id").toString());
+
+                JSONArray categories = (JSONArray) ((JSONObject) businesses.get(i)).get("categories");
+
+                //add categories
+                List<String> tempCategories = new ArrayList<String>() {
+                };
+                for (int j = 0; j < categories.size(); j++) {
+                    tempCategories.add(categories.get(j).toString());
+                    Log.v("categories", tempCategories.get(j));
+                }
+                r.setCategories(tempCategories);
+
+                r.setPhoneNumber(((JSONObject) businesses.get(i)).get("display_phone").toString());
+
+                //add open/closed
+                r.setOpen((Boolean) ((JSONObject) businesses.get(i)).get("is_closed"));
+
+                //add location
+                r.setAddress((((JSONObject)
+                        ((JSONObject) businesses.get(i))
+                                .get("location"))
+                        .get("address").toString()));
+
+                r.setCity(((JSONObject)
+                        ((JSONObject) businesses.get(i))
+                                .get("location"))
+                        .get("city").toString());
+
+                r.setCountry(((JSONObject)
+                        ((JSONObject) businesses.get(i))
+                                .get("location"))
+                        .get("country_code").toString());
+
+                //add neighborhoods
+                JSONArray neighbourhoods = (JSONArray) (((JSONObject)
+                        ((JSONObject) businesses.get(i))
+                                .get("location"))
+                        .get("neighborhoods"));
+
+                if (neighbourhoods != null) {
+                    List<String> tempHoods = new ArrayList<String>() {
+                    };
+                    for (int k = 0; k < neighbourhoods.size(); k++) {
+                        tempHoods.add(neighbourhoods.get(k).toString());
+                        Log.v("neighborhoods", tempHoods.get(k));
+                    }
+                    r.setNeighbourhoods(tempHoods);
+                }
+
+                //add review count
+                r.setReviewCount(((JSONObject) businesses.get(i)).get("review_count").toString());
+
+                //add small rating img url
+                r.setLargeRatingImgUrl(((JSONObject) businesses.get(i)).get("rating_img_url_large").toString());
+                r.setImageUrl(((JSONObject) businesses.get(i)).get("image_url").toString());
+                r.setRatingImageUrl(((JSONObject) businesses.get(i)).get("rating_img_url").toString());
+
+                qrl.addResult(r);
+            }
         }
-        JSONObject firstBusiness = (JSONObject) businesses.get(0);
-        String firstBusinessID = firstBusiness.get("id").toString();
-
     }
 }

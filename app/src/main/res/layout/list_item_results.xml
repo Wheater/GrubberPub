@@ -1,0 +1,117 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/touch_selector_questions">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textview_result_id"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight=".5"
+            android:text="Price range"
+            android:textColor="@color/darkBrown"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight=".5"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/image_view_ratings"
+                android:padding="10dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:padding="5dp"
+
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/textview_reviews_count"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:id="@+id/image_view_result"
+            android:layout_weight=".5"
+            android:padding="10dp"
+            android:paddingBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".4"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".3"
+                android:textColor="@color/toolbarGreen"
+                android:id="@+id/textview_result_phone"
+                android:text="phone"
+                android:paddingTop="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".3"
+                android:text="city"
+                android:textColor="@color/toolbarGreen"
+                android:id="@+id/textview_result_address"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".3"
+                android:textColor="@color/darkBrown"
+                android:id="@+id/textview_result_neighbourhoods"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
