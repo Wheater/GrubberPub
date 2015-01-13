@@ -17,7 +17,7 @@ public class ResultsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_results);
 
         //set actionbar to toolbar
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar_results);
 
         if(toolbar != null) {
             setSupportActionBar(toolbar);
@@ -44,9 +44,7 @@ public class ResultsActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 }

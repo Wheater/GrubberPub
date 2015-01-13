@@ -45,7 +45,7 @@ public class YelpAPI {
 
         OAuthRequest request = createOAuthRequest(SEARCH_PATH);
         request.addQuerystringParameter("term", term);
-        request.addQuerystringParameter("location", location);
+        request.addQuerystringParameter("ll", location);
         request.addQuerystringParameter("limit", String.valueOf(SEARCH_LIMIT));
         return sendRequestAndGetResponse(request);
     }
@@ -63,10 +63,10 @@ public class YelpAPI {
         return response.getBody();
     }
 
-    public void queryAPI(YelpAPI yelpApi, String queryValue) {
+    public void queryAPI(YelpAPI yelpApi, String queryValue, String location) {
 
         String searchResponseJSON =
-                yelpApi.searchForBusinessesByLocation(queryValue, this.DEFAULT_LOCATION);
+                yelpApi.searchForBusinessesByLocation(queryValue, location);
 
         JSONParser parser = new JSONParser();
         JSONObject response = null;

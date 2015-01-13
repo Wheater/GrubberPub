@@ -21,8 +21,12 @@ public class YelpQueryTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
 
         Log.v("params", QueryBuilder.getInstance().buildQuery());
+
         YelpAPI yelpAPI = new YelpAPI();
-        yelpAPI.queryAPI(yelpAPI, QueryBuilder.getInstance().buildQuery());
+
+        yelpAPI.queryAPI(yelpAPI,
+                QueryBuilder.getInstance().buildQuery(),
+                QueryBuilder.getInstance().getLocation());
 
         return null;
     }

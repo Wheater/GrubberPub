@@ -1,5 +1,7 @@
 package com.wheatrenterprises.eric.grubber;
 
+import android.location.Location;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class QueryBuilder implements Serializable {
     private String mSports = "";
     private String mGroup = "";
     private String mWhere = "";
+    private Location mLocation = null;
 
     /*
     * tracker to determine which answers are currently selected
@@ -119,6 +122,14 @@ public class QueryBuilder implements Serializable {
         return mPrice;
     }
 
+    public String getLocation(){
+
+        if(mLocation != null)
+            return mLocation.getLatitude() + "," + mLocation.getLongitude();
+        else
+            return "-33, 95";
+    }
+
     public void setKids(String kids){
 
         mKids = kids;
@@ -147,5 +158,10 @@ public class QueryBuilder implements Serializable {
     public void setPrice(String price){
 
         mPrice = price;
+    }
+
+    public void setLocation(Location location){
+
+        this.mLocation = location;
     }
 }

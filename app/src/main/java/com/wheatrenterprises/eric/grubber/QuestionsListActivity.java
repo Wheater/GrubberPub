@@ -1,6 +1,7 @@
 package com.wheatrenterprises.eric.grubber;
 
 import android.content.res.Configuration;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -12,21 +13,32 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
 
 
-public class QuestionsListActivity extends ActionBarActivity {
+public class QuestionsListActivity extends ActionBarActivity implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private ListView lv;
     private QuestionsAdapter questionsAdapter;
     private QuestionCollection qc = new QuestionCollection();
     private List<String> answerList;
     private QueryBuilder qb = QueryBuilder.getInstance();
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //set up google maps api client
+        buildGoogleApiClient();
 
         //get current value of list items
         answerList = qb.getAnswerList();
@@ -156,30 +168,47 @@ public class QuestionsListActivity extends ActionBarActivity {
         frag.show(getSupportFragmentManager(), "dialog");
     }
 
+    //force onConnect to get last location
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    protected void onStart() {
+        super.onStart();
 
-        outState.putSerializable("QueryBuilder", qb);
-
-        for(int i = 0; i < answerList.size(); i++)
-            outState.putString(String.valueOf(i), answerList.get(i));
+        mGoogleApiClient.connect();
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    public void onConnected(Bundle bundle) {
 
-        qb = (QueryBuilder) savedInstanceState.getSerializable("QueryBuilder");
-
-        if(lv == null){
-            lv = (ListView) findViewById(R.id.listview_questions);
-            questionsAdapter = new QuestionsAdapter(this, QuestionCollection.getQuestionCollection(), QuestionCollection.getQuestionList());
-            lv.setAdapter(questionsAdapter);
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+            qb.setLocation(mLastLocation);
+        } else {
+            Toast.makeText(this, "could not get location", Toast.LENGTH_LONG).show();
         }
-        //notify datasetchanged to refill lv and avoid null values
-        questionsAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void onConnectionSuspended(int i) {
 
+        Toast.makeText(this,
+                "Could not retrieve location. Please choose a location in settings.",
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        Toast.makeText(this,
+                "Could not retrieve location. Please choose a location in settings.",
+                Toast.LENGTH_LONG).show();
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 }
