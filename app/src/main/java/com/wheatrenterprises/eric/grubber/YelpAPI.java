@@ -23,7 +23,7 @@ public class YelpAPI {
 
     private String API_HOST = "api.yelp.com";
     private String DEFAULT_LOCATION = "Houston, TX";
-    private int SEARCH_LIMIT = 5;
+    private int SEARCH_LIMIT = 20;
     private String SEARCH_PATH = "/v2/search";
 
     //don't need business, but leaving here for the future
@@ -95,6 +95,10 @@ public class YelpAPI {
 
                 QueryResult r = new QueryResult(((JSONObject) (businesses.get(i))).get("id").toString());
 
+                //add url
+                if(((JSONObject) (businesses.get(i))).get("url").toString() != null)
+                    r.setUrl(((JSONObject) (businesses.get(i))).get("url").toString());
+
                 JSONArray categories = (JSONArray) ((JSONObject) businesses.get(i)).get("categories");
 
                 //add categories
@@ -106,26 +110,31 @@ public class YelpAPI {
                 }
                 r.setCategories(tempCategories);
 
-                r.setPhoneNumber(((JSONObject) businesses.get(i)).get("display_phone").toString());
+                if(((JSONObject) businesses.get(i)).get("display_phone") != null)
+                    r.setPhoneNumber(((JSONObject) businesses.get(i)).get("display_phone").toString());
 
                 //add open/closed
-                r.setOpen((Boolean) ((JSONObject) businesses.get(i)).get("is_closed"));
+                if(((JSONObject) businesses.get(i)).get("is_closed") != null)
+                    r.setOpen((Boolean) ((JSONObject) businesses.get(i)).get("is_closed"));
 
                 //add location
-                r.setAddress((((JSONObject)
-                        ((JSONObject) businesses.get(i))
-                                .get("location"))
-                        .get("address").toString()));
+                if((((JSONObject)((JSONObject) businesses.get(i)).get("location")).get("address")) != null)
+                    r.setAddress((((JSONObject)
+                            ((JSONObject) businesses.get(i))
+                                    .get("location"))
+                            .get("address").toString()));
 
-                r.setCity(((JSONObject)
-                        ((JSONObject) businesses.get(i))
-                                .get("location"))
-                        .get("city").toString());
+                if((((JSONObject)((JSONObject) businesses.get(i)).get("location")).get("city")) != null)
+                    r.setCity(((JSONObject)
+                            ((JSONObject) businesses.get(i))
+                                    .get("location"))
+                            .get("city").toString());
 
-                r.setCountry(((JSONObject)
-                        ((JSONObject) businesses.get(i))
-                                .get("location"))
-                        .get("country_code").toString());
+                if((((JSONObject)((JSONObject) businesses.get(i)).get("location")).get("country_code")) != null)
+                    r.setCountry(((JSONObject)
+                                ((JSONObject) businesses.get(i))
+                                    .get("location"))
+                                .get("country_code").toString());
 
                 //add neighborhoods
                 JSONArray neighbourhoods = (JSONArray) (((JSONObject)
@@ -144,12 +153,16 @@ public class YelpAPI {
                 }
 
                 //add review count
-                r.setReviewCount(((JSONObject) businesses.get(i)).get("review_count").toString());
+                if(((JSONObject) businesses.get(i)).get("review_count").toString() != null)
+                    r.setReviewCount(((JSONObject) businesses.get(i)).get("review_count").toString());
 
                 //add small rating img url
-                r.setLargeRatingImgUrl(((JSONObject) businesses.get(i)).get("rating_img_url_large").toString());
-                r.setImageUrl(((JSONObject) businesses.get(i)).get("image_url").toString());
-                r.setRatingImageUrl(((JSONObject) businesses.get(i)).get("rating_img_url").toString());
+                if(((JSONObject) businesses.get(i)).get("rating_img_url_large") != null)
+                    r.setLargeRatingImgUrl(((JSONObject) businesses.get(i)).get("rating_img_url_large").toString());
+                if(((JSONObject) businesses.get(i)).get("image_url") != null)
+                    r.setImageUrl(((JSONObject) businesses.get(i)).get("image_url").toString());
+                if(((JSONObject) businesses.get(i)).get("rating_img_url") != null)
+                    r.setRatingImageUrl(((JSONObject) businesses.get(i)).get("rating_img_url").toString());
 
                 qrl.addResult(r);
             }

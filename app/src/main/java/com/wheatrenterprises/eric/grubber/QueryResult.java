@@ -24,11 +24,13 @@ public class QueryResult implements Serializable {
     private String id = "";
     private String rating = "";
     private String rating_img_url_large="";
+    private String mUrl = "";
 
     public QueryResult(String id){
         this.id = id;
     }
 
+    public void setUrl(String url) {this.mUrl = url;}
     public void setRating(String rating){this.rating = rating;}
     public void setId(String id){this.id = id;}
     public void setCategories(List<String> categories){ mCategories = categories; }
@@ -44,6 +46,7 @@ public class QueryResult implements Serializable {
     public void setRatingImageUrl(String url){mRatingImageUrl = url;}
 
 
+    public String getUrl(){return mUrl;}
     public String getRating(){return rating;}
     public String getId(){return id;}
     public List<String> getCategories(){return mCategories;}

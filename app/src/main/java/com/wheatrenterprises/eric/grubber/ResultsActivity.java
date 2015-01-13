@@ -1,5 +1,6 @@
 package com.wheatrenterprises.eric.grubber;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -61,7 +62,9 @@ public class ResultsActivity extends ActionBarActivity {
 
         switch(id) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                NavUtils.navigateUpTo(this, upIntent);
 
                 return true;
         }

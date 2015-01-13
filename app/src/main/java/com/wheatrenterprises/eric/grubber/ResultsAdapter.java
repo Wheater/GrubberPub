@@ -3,7 +3,9 @@ package com.wheatrenterprises.eric.grubber;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,12 +59,12 @@ public class ResultsAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_item_results, null);
         }
 
-
         textViewId = (TextView) convertView.findViewById(R.id.textview_result_id);
         textViewAddress = (TextView) convertView.findViewById(R.id.textview_result_address);
         textViewRatingCount = (TextView) convertView.findViewById(R.id.textview_reviews_count);
         textViewPhone = (TextView) convertView.findViewById(R.id.textview_result_phone);
         TextView textViewHood = (TextView) convertView.findViewById(R.id.textview_result_neighbourhoods);
+        TextView textViewOpenClosed = (TextView) convertView.findViewById(R.id.textview_result_open_closed);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.image_view_result);
         ImageView ratingView = (ImageView) convertView.findViewById(R.id.image_view_ratings);
 
@@ -76,10 +78,19 @@ public class ResultsAdapter extends BaseAdapter {
         textViewRatingCount.setText(results.get(position).getReviewCount() + " reviews");
         textViewPhone.setText(results.get(position).getPhoneNumber());
 
+        if(results.get(position).getIsClosed()) {
+            textViewOpenClosed.setText("Closed");
+            textViewOpenClosed.setTextColor(Color.RED);
+        } else{
+            textViewOpenClosed.setText("Open");
+            textViewOpenClosed.setTextColor(Color.GREEN);
+        }
+
         final String number = "tel:" + results.get(position).getPhoneNumber();
         final Context cont = context;
         final String address = results.get(position).getAddress();
 
+        //launch phone dialer
         textViewPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +101,7 @@ public class ResultsAdapter extends BaseAdapter {
             }
         });
 
+        //launch maps
         textViewAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +109,25 @@ public class ResultsAdapter extends BaseAdapter {
                 String mapUri = "http://maps.google.co.in/maps?q=" + address;
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
                 context.startActivity(intent);
+            }
+        });
+
+        final String mUrl = results.get(position).getUrl().replace("\\", "");;
+
+        //launch yelp website
+        textViewId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                intent.setPackage("com.android.chrome");
+                try {
+                    context.startActivity(intent);
+                } catch(Exception e){
+
+                    Log.v("ERROR", e.toString());
+                    Log.v("ERROR", "could not launch chrome: " + mUrl);
+                }
             }
         });
 
