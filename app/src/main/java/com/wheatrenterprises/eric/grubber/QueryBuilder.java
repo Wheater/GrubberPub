@@ -12,13 +12,14 @@ import java.util.List;
  */
 public class QueryBuilder implements Serializable {
 
-    private String mPrice = "";
+    private String mAllergy = "";
     private String mKids = "";
     private String mSmoking = "";
     private String mSports = "";
     private String mGroup = "";
-    private String mWhere = "";
+    private String mWhere = "Restaurant";
     private Location mLocation = null;
+    private String mCategory = "";
 
     /*
     * tracker to determine which answers are currently selected
@@ -63,9 +64,10 @@ public class QueryBuilder implements Serializable {
 
     public void clear(){
 
+        setCategory("");
         setGroup("");
         setKids("");
-        setPrice("");
+        setAllergy("");
         setSmoking("");
         setSports("");
         setWhere("");
@@ -73,11 +75,13 @@ public class QueryBuilder implements Serializable {
 
     public String buildQuery(){
 
-        return getKids() + " " +
+        return  getAllergy() + "" +
+                getKids() + " " +
                 getGroup() + " " +
                 getSmoking() + " " +
                 getSports() + " " +
-                getWhere();
+                getWhere() + " " +
+                getCategory();
     }
 
     public String getKids(){
@@ -117,9 +121,9 @@ public class QueryBuilder implements Serializable {
         return mWhere;
     }
 
-    public String getPrice(){
+    public String getAllergy(){
 
-        return mPrice;
+        return mAllergy;
     }
 
     public String getLocation(){
@@ -128,6 +132,12 @@ public class QueryBuilder implements Serializable {
             return mLocation.getLatitude() + "," + mLocation.getLongitude();
         else
             return "37.7833,-122.4167";
+    }
+
+    public String getCategory(){ return mCategory;}
+
+    public void setCategory(String category){
+        mCategory = category;
     }
 
     public void setKids(String kids){
@@ -155,9 +165,9 @@ public class QueryBuilder implements Serializable {
         mWhere = where;
     }
 
-    public void setPrice(String price){
+    public void setAllergy(String allergy){
 
-        mPrice = price;
+        mAllergy = allergy;
     }
 
     public void setLocation(Location location){

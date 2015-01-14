@@ -122,7 +122,7 @@
                 android:layout_height="0dp"
                 android:layout_weight=".3"
                 android:textColor="@color/darkBrown"
-                android:id="@+id/textview_result_neighbourhoods"
+                android:id="@+id/textview_result_categories"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

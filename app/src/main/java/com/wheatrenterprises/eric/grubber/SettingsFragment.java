@@ -1,19 +1,21 @@
 package com.wheatrenterprises.eric.grubber;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 
 /**
@@ -68,23 +70,45 @@ public class SettingsFragment extends DialogFragment {
         editText.setText(sharedPreferences.getString("Location", ""));
         final EditText et = editText;
 
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                                               @Override
+                                               public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
 
-                if(!hasFocus) {
-                    sharedPreferencesEditor.putString("Location", et.getText().toString());
-                    sharedPreferencesEditor.commit();
-                }
-            }
-        });
+                                                   if (keyEvent != null && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                                                       InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        RadioGroup rg = (RadioGroup) view.findViewById(R.id.radio_button_group);
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                                       in.hideSoftInputFromWindow(textView.getWindowToken(),
+                                                               InputMethodManager.HIDE_NOT_ALWAYS);
 
-                if(chosenId == checkedId){
+                                                       return true;
+
+                                                   }
+                                                   return false;
+                                               }
+                                           });
+
+                editText.setOnFocusChangeListener(new View.OnFocusChangeListener()
+
+                                                  {
+                                                      @Override
+                                                      public void onFocusChange(View v, boolean hasFocus) {
+
+                                                          if (!hasFocus) {
+                                                              sharedPreferencesEditor.putString("Location", et.getText().toString());
+                                                              sharedPreferencesEditor.commit();
+                                                          }
+                                                      }
+                                                  }
+                );
+
+            RadioGroup rg = (RadioGroup) view.findViewById(R.id.radio_button_group);
+            rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+
+            {
+                @Override
+                public void onCheckedChanged (RadioGroup group,int checkedId){
+
+                if (chosenId == checkedId) {
                     sharedPreferencesEditor.putString("LocationType", "Chosen");
                     sharedPreferencesEditor.commit();
 
@@ -97,19 +121,25 @@ public class SettingsFragment extends DialogFragment {
                     et.setVisibility(View.INVISIBLE);
                 }
             }
-        });
+            }
 
-        if(sharedPreferences.getString("LocationType", "Current").equals("Chosen"))
-            rbChosen.setChecked(true);
-        else
-            rbCurrent.setChecked(true);
+            );
 
-        // Inflate the layout for this fragment
-        return view;
-    }
+            if(sharedPreferences.getString("LocationType","Current").
+
+            equals("Chosen")
+
+            )
+                    rbChosen.setChecked(true);
+            else
+                    rbCurrent.setChecked(true);
+
+            // Inflate the layout for this fragment
+            return view;
+        }
 
 
-    @Override
+        @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
 

@@ -15,6 +15,7 @@ public class QuestionCollection {
     private QueryBuilder qb = QueryBuilder.getInstance();
 
     private static ArrayList<String> mQuestionList = new ArrayList<String>(){{
+        add("category");
         add("What price range are you interested in?");
         add("Where are you eating?");
         add("Are you in a group larger than 5?");
@@ -24,7 +25,8 @@ public class QuestionCollection {
     }};
 
     //answers
-    final static String[] costAnswers = {"$", "$$", "$$$", "$$$$"};
+    final static String[] categoryAnswers = {"category"};
+    final static String[] costAnswers = {"Gluten-free", "Vegan", "Vegetarian", "None"};
     final static String[] sportsAnswers = {"Yes", "No"};
     final static String[] smokingAnswers = {"Yes", "No"};
     final static String[] groupAnswers = {"Yes", "No"};
@@ -38,7 +40,9 @@ public class QuestionCollection {
 
         for(String question : mQuestionList){
 
-            if(question.equals("What price range are you interested in?"))
+            if(question.equals("category"))
+                mQuestionCollection.put(question, new ArrayList<String>(Arrays.asList(categoryAnswers)));
+            else if(question.equals("What price range are you interested in?"))
                     mQuestionCollection.put(question, new ArrayList<String>(Arrays.asList(costAnswers)));
             else if(question.equals("Where are you eating?"))
                 mQuestionCollection.put(question, new ArrayList<String>(Arrays.asList(locationAnswers)));
@@ -59,21 +63,23 @@ public class QuestionCollection {
         switch(position){
 
             case 0:
-                qb.setPrice(value);
-                break;
+                qb.setCategory(value);
             case 1:
-                qb.setWhere(value);
+                qb.setAllergy(value);
                 break;
             case 2:
-                qb.setGroup(value);
+                qb.setWhere(value);
                 break;
             case 3:
-                qb.setSports(value);
+                qb.setGroup(value);
                 break;
             case 4:
-                qb.setKids(value);
+                qb.setSports(value);
                 break;
             case 5:
+                qb.setKids(value);
+                break;
+            case 6:
                 qb.setSmoking(value);
                 break;
         }

@@ -93,7 +93,7 @@ public class YelpAPI {
 
                 Log.v("nextJSON", ((JSONObject) businesses.get(i)).get("location").toString());
 
-                QueryResult r = new QueryResult(((JSONObject) (businesses.get(i))).get("id").toString());
+                QueryResult r = new QueryResult(((JSONObject) (businesses.get(i))).get("name").toString());
 
                 //add url
                 if(((JSONObject) (businesses.get(i))).get("url").toString() != null)
@@ -101,21 +101,38 @@ public class YelpAPI {
 
                 JSONArray categories = (JSONArray) ((JSONObject) businesses.get(i)).get("categories");
 
-                //add categories
-                List<String> tempCategories = new ArrayList<String>() {
-                };
-                for (int j = 0; j < categories.size(); j++) {
-                    tempCategories.add(categories.get(j).toString());
-                    Log.v("categories", tempCategories.get(j));
-                }
-                r.setCategories(tempCategories);
+                //check category null, then check that allergy info exists in response
+                if(categories != null) {
+                    //add categories
+                    List<String> tempCategories = new ArrayList<String>() {
+                    };
+                    for (int j = 0; j < categories.size(); j++) {
+                        tempCategories.add(categories.get(j).toString());
+                        Log.v("categories", tempCategories.get(j));
+                    }
+                    r.setCategories(tempCategories);
 
+                    if(QueryBuilder.getInstance().getAllergy() != "") {
+                        //check if allergy information is included
+                        boolean hasAllergy = false;
+
+                        for (String category : r.getCategories()) {
+
+                            if (category.contains(QueryBuilder.getInstance().getAllergy()))
+                                hasAllergy = true;
+                        }
+
+                        if (!hasAllergy)
+                            continue;
+                    }
+
+                }
                 if(((JSONObject) businesses.get(i)).get("display_phone") != null)
                     r.setPhoneNumber(((JSONObject) businesses.get(i)).get("display_phone").toString());
 
                 //add open/closed
                 if(((JSONObject) businesses.get(i)).get("is_closed") != null)
-                    r.setOpen((Boolean) ((JSONObject) businesses.get(i)).get("is_closed"));
+                    r.setOpen(((JSONObject) businesses.get(i)).get("is_closed").toString());
 
                 //add location
                 if((((JSONObject)((JSONObject) businesses.get(i)).get("location")).get("address")) != null)

@@ -3,7 +3,6 @@ package com.wheatrenterprises.eric.grubber;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by Eric on 1/12/2015.
+ * Adapter responsible for filling results listview.
  */
 public class ResultsAdapter extends BaseAdapter {
 
@@ -32,6 +31,7 @@ public class ResultsAdapter extends BaseAdapter {
     public ResultsAdapter(Activity context, List<QueryResult> results){
 
         this.results = results;
+
         this.context = context;
     }
 
@@ -47,7 +47,7 @@ public class ResultsAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -63,28 +63,26 @@ public class ResultsAdapter extends BaseAdapter {
         textViewAddress = (TextView) convertView.findViewById(R.id.textview_result_address);
         textViewRatingCount = (TextView) convertView.findViewById(R.id.textview_reviews_count);
         textViewPhone = (TextView) convertView.findViewById(R.id.textview_result_phone);
-        TextView textViewHood = (TextView) convertView.findViewById(R.id.textview_result_neighbourhoods);
-        TextView textViewOpenClosed = (TextView) convertView.findViewById(R.id.textview_result_open_closed);
+        TextView textViewCategories = (TextView) convertView.findViewById(R.id.textview_result_categories);
+        TextView textViewNeighbourhoods = (TextView) convertView.findViewById(R.id.textview_result_open_closed);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.image_view_result);
         ImageView ratingView = (ImageView) convertView.findViewById(R.id.image_view_ratings);
 
-        Picasso.with(context).load(results.get(position).getImageUrl()).resize(convertDiptoPix(140), convertDiptoPix(140)).into(imageView);
-        Picasso.with(context).load(results.get(position).getLargeRatingImgUrl()).into(ratingView);
+        if(results.get(position).getImageUrl() != "")
+            Picasso.with(context).load(results.get(position).getImageUrl()).resize(convertDiptoPix(140), convertDiptoPix(140)).into(imageView);
+        if(results.get(position).getLargeRatingImgUrl() != "")
+            Picasso.with(context).load(results.get(position).getLargeRatingImgUrl()).into(ratingView);
 
-        textViewId.setText(formatId(position));
+        textViewId.setText(results.get(position).getId());
         if(results.get(position).getNeighbourhoods().size() > 0)
-            textViewHood.setText(results.get(position).getNeighbourhoods().get(0));
+            textViewCategories.setText(formatCategories(position));
         textViewAddress.setText(formatAddress(position));
         textViewRatingCount.setText(results.get(position).getReviewCount() + " reviews");
         textViewPhone.setText(results.get(position).getPhoneNumber());
 
-        if(results.get(position).getIsClosed()) {
-            textViewOpenClosed.setText("Closed");
-            textViewOpenClosed.setTextColor(Color.RED);
-        } else{
-            textViewOpenClosed.setText("Open");
-            textViewOpenClosed.setTextColor(Color.GREEN);
-        }
+        if(results.get(position).getNeighbourhoods().size() > 0)
+            textViewNeighbourhoods.setText(results.get(position).getNeighbourhoods().get(0).replace("\\", ""));
+
 
         final String number = "tel:" + results.get(position).getPhoneNumber();
         final Context cont = context;
@@ -112,7 +110,7 @@ public class ResultsAdapter extends BaseAdapter {
             }
         });
 
-        final String mUrl = results.get(position).getUrl().replace("\\", "");;
+        final String mUrl = results.get(position).getUrl().replace("\\", "");
 
         //launch yelp website
         textViewId.setOnClickListener(new View.OnClickListener() {
@@ -141,17 +139,11 @@ public class ResultsAdapter extends BaseAdapter {
         return source.substring(2, source.length() - 2).replace("\"", "");
     }
 
-    private String formatId(int position) {
-        //format id string
-        String formattedId = results.get(position).getId();
-        formattedId = formattedId.replace('-', ' ');
-        String[] arr = formattedId.split(" ");
-        String reformatted = "";
-        for(int i = 0; i< arr.length - 1; i++){
+    private String formatCategories(int position){
 
-            reformatted = reformatted + String.valueOf(arr[i].charAt(0)).toUpperCase() + arr[i].substring(1) + " ";
-        }
-        return reformatted;
+        String source = results.get(position).getCategories().get(0);
+
+        return source.substring(2).split(",")[0].replace("\"", "");
     }
 
     public int convertDiptoPix(float dips){

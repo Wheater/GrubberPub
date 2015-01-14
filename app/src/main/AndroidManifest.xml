@@ -16,7 +16,8 @@
         <activity
             android:name=".QuestionsListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

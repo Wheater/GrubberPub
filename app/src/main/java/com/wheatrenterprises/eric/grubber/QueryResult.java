@@ -12,7 +12,7 @@ public class QueryResult implements Serializable {
 
     private List<String> mCategories = new ArrayList<String>(){};
     private String mPhoneNumber = "";
-    private boolean mIsClosed = false;
+    private String mIsClosed = "false";
     private String mImageUrl = "";
     private String mAddress = "";
     private String mCity = "";
@@ -25,17 +25,19 @@ public class QueryResult implements Serializable {
     private String rating = "";
     private String rating_img_url_large="";
     private String mUrl = "";
+    private String mAllergy = "";
 
     public QueryResult(String id){
         this.id = id;
     }
 
+    public void setAllergy(String allergy){mAllergy = allergy;}
     public void setUrl(String url) {this.mUrl = url;}
     public void setRating(String rating){this.rating = rating;}
     public void setId(String id){this.id = id;}
     public void setCategories(List<String> categories){ mCategories = categories; }
     public void setPhoneNumber(String phoneNumber){ mPhoneNumber = phoneNumber; }
-    public void setOpen(boolean closed){ mIsClosed = closed;}
+    public void setOpen(String closed){ mIsClosed = closed;}
     public void setImageUrl(String url){ mImageUrl = url;}
     public void setAddress(String address){mAddress = address;}
     public void setCity(String city){mCity = city;}
@@ -45,13 +47,13 @@ public class QueryResult implements Serializable {
     public void setLargeRatingImgUrl(String url){rating_img_url_large = url;}
     public void setRatingImageUrl(String url){mRatingImageUrl = url;}
 
-
+    public String getAllergy(){return mAllergy;}
     public String getUrl(){return mUrl;}
     public String getRating(){return rating;}
     public String getId(){return id;}
     public List<String> getCategories(){return mCategories;}
     public String getPhoneNumber(){return mPhoneNumber;}
-    public boolean getIsClosed(){return mIsClosed;}
+    public String getIsClosed(){return mIsClosed;}
     public String getImageUrl(){return mImageUrl;}
     public String getAddress(){return mAddress;}
     public String getCity(){return mCity;}

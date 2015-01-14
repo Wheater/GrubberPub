@@ -1,6 +1,5 @@
 package com.wheatrenterprises.eric.grubber;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Address;
@@ -98,48 +97,50 @@ public class QuestionsListActivity extends ActionBarActivity implements
 
             View v = questionsAdapter.getView(i, null, lv);
 
-            if(i >= 2){
+            if(i >= 3){
 
                 Switch toggleSwitch = (Switch) v.findViewById(R.id.switch_questions_bool);
 
                 if (indexString == "Yes")
                     toggleSwitch.setChecked(true);
 
-            } else if(i < 1){
+            } else if(i == 1){
 
-                if(indexString == "$"){
+                if(indexString == "Gluten-Free"){
 
-                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_price_1);
+                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_gluten);
                     rb.setChecked(true);
                 }
-                else if(indexString == "$$"){
+                else if(indexString == "Vegan"){
 
-                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_price_2);
+                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_vegan);
                     rb.setChecked(true);
-                } else if(indexString == "$$$"){
+                } else if(indexString == "Vegetarian"){
 
-                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_price_3);
+                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_vegetarian);
                     rb.setChecked(true);
-                } else if(indexString == "$$$$"){
-
-                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_price_4);
+                } else {
+                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_none);
                     rb.setChecked(true);
                 }
+            } else if(i == 0){
 
-            } else{
+            }
+
+            else{
 
                 if(indexString == "Restaurant"){
 
-                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_price_1);
+                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_gluten);
                     rb.setChecked(true);
                 }
                 else if(indexString == "Delivery"){
 
-                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_price_2);
+                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_vegan);
                     rb.setChecked(true);
                 } else if(indexString == "Take-out"){
 
-                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_price_3);
+                    RadioButton rb = (RadioButton) v.findViewById(R.id.radio_button_vegetarian);
                     rb.setChecked(true);
                 }
             }

@@ -6,10 +6,10 @@
     android:background="@drawable/touch_selector_questions">
 
     <TextView
-        android:id="@+id/textview_question_category"
+        android:id="@+id/textview_question_allergy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Price range"
+        android:text="Food allergies"
 
         android:textColor="@color/darkBrown"
         android:textStyle="bold"
@@ -25,48 +25,47 @@
         <RadioGroup
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/radio_group_pricing"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
+            android:id="@+id/radio_group_allergy"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
 
             <RadioButton
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_button_price_1"
-                android:layout_weight=".25"
-                android:text="$"
+                android:id="@+id/radio_button_gluten"
+
+                android:text="Gluten-free"
                 android:layout_gravity="center"
                 android:gravity="center"/>
 
             <RadioButton
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".25"
-                android:text="$$"
+                android:text="Vegan"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:id="@+id/radio_button_price_2"/>
+                android:id="@+id/radio_button_vegan"/>
 
             <RadioButton
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".25"
-                android:text="$$$"
+                android:text="Vegetarian"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:id="@+id/radio_button_price_3"/>
+                android:id="@+id/radio_button_vegetarian"/>
 
             <RadioButton
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".25"
-                android:text="$$$$"
+                android:text="None"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:id="@+id/radio_button_price_4"/>
+                android:id="@+id/radio_button_none"/>
 
         </RadioGroup>
 

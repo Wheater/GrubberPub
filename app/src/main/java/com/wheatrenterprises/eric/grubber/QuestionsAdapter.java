@@ -2,12 +2,17 @@ package com.wheatrenterprises.eric.grubber;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -113,41 +118,76 @@ public class QuestionsAdapter extends BaseAdapter {
                     }
                 });
             }
-            else if(currentItemList.size() == 4 && currentItemList.get(0).equals("$")) {
-                convertView = inflater.inflate(R.layout.list_item_questions_pricing, null);
+            else if(currentItemList.size() == 4 && currentItemList.get(0).equals("Gluten-free")) {
+                convertView = inflater.inflate(R.layout.list_item_questions_allergy, null);
                 index = "pricing";
 
-                RadioButton rbPrice1 = (RadioButton) convertView.findViewById(R.id.radio_button_price_1);
-                RadioButton rbPrice2 = (RadioButton) convertView.findViewById(R.id.radio_button_price_2);
-                RadioButton rbPrice3 = (RadioButton) convertView.findViewById(R.id.radio_button_price_3);
+                RadioButton rbPrice1 = (RadioButton) convertView.findViewById(R.id.radio_button_gluten);
+                RadioButton rbPrice2 = (RadioButton) convertView.findViewById(R.id.radio_button_vegan);
+                RadioButton rbPrice3 = (RadioButton) convertView.findViewById(R.id.radio_button_vegetarian);
 
                 //radio button ids for onCheckChanged
-                final int rbPrice1Id = rbPrice1.getId();
-                final int rbPrice2Id = rbPrice2.getId();
-                final int rbPrice3Id = rbPrice3.getId();
+                final int rbGlutenId = rbPrice1.getId();
+                final int rbVeganId = rbPrice2.getId();
+                final int rbVegetarianId = rbPrice3.getId();
 
-                RadioGroup rg = (RadioGroup) convertView.findViewById(R.id.radio_group_pricing);
+                RadioGroup rg = (RadioGroup) convertView.findViewById(R.id.radio_group_allergy);
                 rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                         Log.v("radiogroup", "checked");
 
-                        if(rbPrice1Id == checkedId){
+                        if(rbGlutenId == checkedId){
 
-                            qb.setPrice("$");
-                        } else if(rbPrice2Id == checkedId) {
+                            qb.setAllergy("Gluten-Free");
+                        } else if(rbVeganId == checkedId) {
 
-                            qb.setPrice("$$");
-                        } else if(rbPrice3Id == checkedId) {
+                            qb.setAllergy("Vegan");
+                        } else if(rbVegetarianId == checkedId) {
 
-                            qb.setPrice("$$$");
-                        } else{
-
-                            qb.setPrice("$$$$");
-                        }
-
+                            qb.setAllergy("Vegetarian");
+                        } else
+                            qb.setAllergy("");
                         Log.v("query", qb.buildQuery());
+                    }
+                });
+            } else{
+
+                convertView = inflater.inflate(R.layout.list_item_food_category, null);
+                index = "category";
+
+                final View v = convertView;
+                final EditText et = (EditText) convertView.findViewById(R.id.edit_text_food_category);
+                et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+
+                        if (keyEvent != null&& keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                            InputMethodManager in = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                            in.hideSoftInputFromWindow(v.getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+
+                            return true;
+
+                        }
+                        return false;
+                    }
+                });
+
+                et.addTextChangedListener(new TextWatcher() {
+
+                    public void afterTextChanged(Editable s) {
+                        qb.setCategory(s.toString());
+                    }
+
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        //required methods
+                    }
+
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        //required method
                     }
                 });
             }
@@ -155,7 +195,7 @@ public class QuestionsAdapter extends BaseAdapter {
 
         if(index.equals("bool")){
 
-            TextView textView = (TextView) convertView.findViewById(R.id.textview_question_category);
+            TextView textView = (TextView) convertView.findViewById(R.id.textview_question_allergy);
             textView.setText(questionList.get(position));
         }
 

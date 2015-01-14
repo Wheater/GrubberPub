@@ -6,6 +6,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -36,6 +37,14 @@ public class ResultsActivity extends ActionBarActivity {
         resultsAdapter = new ResultsAdapter(this, QueryResultList.getInstance().getResults());
         lv = (ListView) findViewById(R.id.listview_results);
         lv.setAdapter(resultsAdapter);
+
+        if(QueryResultList.getInstance().getResults().size() == 0){
+
+            String[] strings = {"No suitable results. Please refine your search."};
+            lv.setAdapter(new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1,
+                            strings));
+        }
 
         ImageView imgView = (ImageView) findViewById(R.id.image_view_yelp_image);
         Picasso.with(this)
